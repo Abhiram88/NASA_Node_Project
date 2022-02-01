@@ -17,6 +17,7 @@ launches.set(launch.flightNumber, launch);
 
 
 function existsLaunchWithId(launchId){
+    console.log(launches);
     return launches.has(launchId);
 }
 
