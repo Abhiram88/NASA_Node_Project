@@ -11,38 +11,49 @@ describe('Test GET /launches', ()=> {
 })  // twe can create a test fixture with different test cases
 
 
-describe('Test POST /launch', ()=>{
+describe('Test POST /launch', () => {
     const completeLaunchData = {
-        mission: 'USS',
-        rocket: 'NCC-1701',
-        target: 'kepler-186F',
-        launchDate: 'January 4th 2028'
-    }
-    
+      mission: 'USS Enterprise',
+      rocket: 'NCC 1701-D',
+      target: 'Kepler-186 f',
+      launchDate: 'January 4, 2028',
+    };
+  
     const launchDataWithoutDate = {
-        mission: 'USS',
-        rocket: 'NCC-1701',
-        target: 'kepler-186F',
-    }
+      mission: 'USS Enterprise',
+      rocket: 'NCC 1701-D',
+      target: 'Kepler-186 f',
+    };
+  
+    const launchDataWithInvalidDate = {
+      mission: 'USS Enterprise',
+      rocket: 'NCC 1701-D',
+      target: 'Kepler-186 f',
+      launchDate: 'zoot',
+    };
+  
+    test('It should respond with 201 created', async () => {
+      const response = await request(app)
+        .post('/launches')
+        .send(completeLaunchData)
+        .expect('Content-Type', /json/)
+        .expect(201);
+  
+      const requestDate = new Date(completeLaunchData.launchDate).valueOf();
+      const responseDate = new Date(response.body.launchDate).valueOf();
+      expect(responseDate).toBe(requestDate);
+  
+      expect(response.body).toMatchObject(launchDataWithoutDate);
+    
+    });
 
-    test("It should respond with 201 status", async ()=>{
+  
+    test(" It should catch missing required property", async ()=>{
         const response = await request(app)
         .post('/launches')
         .send(completeLaunchData)
         .expect('Content-Type', /json/)
         .expect(201);
-
-        const requestDate = new Date(completeLaunchData.launchDate).valueOf();
-        const responseDate = new Date(response.body.launchDate).valueOf();
-        console.log(requestDate, responseDate);
-        expect(responseDate).toBe(requestDate);
-
-        expect(response.body).toMatchObject(launchDataWithoutDate);
-        
-    });
-
-    test(" It should catch missing required property", ()=>{
-
     });
 
     test(" It should catch invalid dates", ()=>{
@@ -50,4 +61,3 @@ describe('Test POST /launch', ()=>{
     });
 });
 
-// to test againt the API, we need to make a request to the API -- SUPERTEST
