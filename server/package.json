@@ -4,7 +4,8 @@
   "description": "Nasa Mission Control API",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test-watch": "jest --watch",
     "watch": "nodemon src/server.js",
     "start": "set PORT=5000&& node src/server.js"
   },
@@ -18,5 +19,9 @@
     "http": "^0.0.1-security",
     "nasa_project": "file:..",
     "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "jest": "^27.4.7",
+    "supertest": "^6.2.2"
   }
 }
