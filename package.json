@@ -11,6 +11,7 @@
     "client": "npm start --prefix client",
     "watch": "concurrently 'npm:server' 'npm:client'",
     "deploy": "npm run build --prefix client && npm start --prefix server",
+    "deploy-cluster": "npm run build --prefix client && npm run cluster --prefix server",
     "test": "npm test --prefix client && npm test --prefix server"
   },
   "keywords": [],
@@ -19,6 +20,7 @@
   "dependencies": {
     "concurrently": "^7.0.0",
     "jtest": "^0.0.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pm2": "^5.1.2"
   }
 }
