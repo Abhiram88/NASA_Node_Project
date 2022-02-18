@@ -4,13 +4,13 @@ const {parse} = require('csv-parse');
 
 const planets = require('./planets.mongo');
 
-const habitablePlanets = [];
 
 function isHabitablePlanet(planet) {
-  return planet['koi_disposition'] === 'CONFIRMED'
-    && planet['koi_insol'] > 0.36 && planet['koi_insol'] < 1.11
-    && planet['koi_prad'] < 1.6;
-}
+    return planet['koi_disposition'] === 'CONFIRMED'
+      && planet['koi_insol'] > 0.36 && planet['koi_insol'] < 1.11
+      && planet['koi_prad'] < 1.6;
+  }
+  
 
 // when this file is called, node will try and export the module before the below async code is run resulting in an error.
 
@@ -23,7 +23,7 @@ function loadPlanetsData() {
             }))
             .on('data', async (data) => {
                 if (isHabitablePlanet(data)) {
-                    
+                    savePlanet(data);
                 }
             })
             .on('error', (err) => {
@@ -42,13 +42,13 @@ async function getAllPlanets(){
     return await planets.find({});
 }
 
-async function savePlanet(planets){
+async function savePlanet(planet){
     try{
         // insert + update = upsert
     await planets.updateOne({
-        keplerName: data.kepler_name, //matches the schema object
+        keplerName: planet.kepler_name, //matches the schema object
     }, {
-        keplerName: data.kepler_name,
+        keplerName: planet.kepler_name,
     }, {
         upsert: true,
     });
