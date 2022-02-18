@@ -23,18 +23,16 @@ function loadPlanetsData() {
             }))
             .on('data', async (data) => {
                 if (isHabitablePlanet(data)) {
-                    // insert + update = upsert
-                    await planets.create({
-                        keplerName: data.kepler_name, //matches the schema object
-                    });
+                    
                 }
             })
             .on('error', (err) => {
                 console.log(err);
                 reject(err);
             })
-            .on('end', () => {
-                console.log(`${habitablePlanets.length} habitable planets found!`);
+            .on('end', async () => {
+                const countPlanetsFound = (await getAllPlanets()).length;
+                console.log(`${countPlanetsFound} habitable planets found!`);
                 resolve();
          });
     });
@@ -42,6 +40,22 @@ function loadPlanetsData() {
 
 async function getAllPlanets(){
     return await planets.find({});
+}
+
+async function savePlanet(planets){
+    try{
+        // insert + update = upsert
+    await planets.updateOne({
+        keplerName: data.kepler_name, //matches the schema object
+    }, {
+        keplerName: data.kepler_name,
+    }, {
+        upsert: true,
+    });
+    }catch(err){
+        console.log(`Couldn't save planets data because of err: ${err}`);
+    }
+    
 }
 
   module.exports = {

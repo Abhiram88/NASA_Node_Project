@@ -11,5 +11,5 @@ const planetSchema = new mongoose.Schema({
 // NodeJS queries Models for info, which uses schemas that are mapped to collections of documents to look for the searched query.
 
 
-module.exports = mongoose.Model('Planet', planetSchema)
+module.exports = mongoose.model('Planet', planetSchema)
 
